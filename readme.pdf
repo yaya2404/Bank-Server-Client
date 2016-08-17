@@ -1,0 +1,21 @@
+The structures I'll be using in this implementation will be the account struct which contains: a string that holds 100 chars, a variable called balance of type float, and a variable called on of type int for boolean checks (1 or 0). 
+I created another structure called list that contains: an array of 20 struct accounts and a size variable of type int. The mutex used to lock and unlock variable access is mutexOpen. In terms of thread synchronization, the only two 
+areas where a mutex is really needed is when a client attempts to open an account and when the alarmHandler function prints out the bank's account information. 
+
+The alarmHandler function is called when the function alarm() counts to 20. Once the function is called, the server prints out the account information of all accounts stored in the bank. Before the information is printed, sem_wait() 
+is called to lock the openMutex to prevent clients from opening new accounts.
+
+The session accepter thread performs the following in order(after being spawned from main):
+sets up alarm timer and signal for printing out account information
+creates and binds a socket
+opens the socket to listen for connections
+continually accepts connection from multiple client calls
+spawns separate client session thread for every client call
+
+The client session thread follows the command syntax given in the assignment instructions. In terms of error checking, the client session checks for opening duplicate accounts, full bank, 
+attempts at starting two simultaneous customer sessions, starting customer sessions when the account does not exist, and invalid inputs. The way my client session thread handles customer sessions 
+and non customer sessions is a nested while() loop. The first while loop checks for 3 commands: open, start, and exit. The thread will print error messages for any other commands. The nested while loop is used 
+to implement the customer session thread and checks for the following commands: debit, credit, balance, finish, and exit. The thread will print error messages for any other commands which prevents the client from 
+opening accounts in a customer session and starting simultaneous customer sessions. If the client sends the finish command the nested loop will break and the first loop while continue to iterate until the exit command is sent.
+
+NOTE: the piece of code "buffer[strlen(buffer)-1] = '\0'" is used in my code (appears twice) to remove the new line character because my client program takes input through stdin which records the new line character. For the sake of testing, remove or apply // if you do not use stdin to send commands to server. 

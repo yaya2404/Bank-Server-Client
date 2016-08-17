@@ -1,0 +1,37 @@
+Input: error check for duplicate accounts and restriction on command syntax
+open John Smith
+open John Smith
+credit 100
+debit 100
+balance
+finish
+Output:
+Error: client name already exists
+Error: command only valid in customer session 
+
+Input: error check for full bank
+open 1...open 20 (opens 20 accounts)
+open 21
+Output:
+Error: bank has full list of accounts
+
+Input: error check for duplicate customer customer sessions, opening account during customer session, and starting non-existing account
+open John Smith
+start Jerry Smith
+start John Smith
+start John Smith - (attempted on a different client program)
+open Jerry Smith
+Output:
+Error: account does not exist in bank
+Error: given client name already in customer session 
+Error: cannot open account during customer session 
+
+Input: error check for exceeding debit and invalid debit/credit input
+balance
+debit 125
+credit abdc
+Output:
+0
+Error: requested amount exceeds the balance of your accounts
+Error: invalid input
+

@@ -1,0 +1,2 @@
+I created an executable called "client" to act as a client that connects and interacts with the bank server. The client executable creates a socket and continually attempts to connect to the bank server until a connection 
+is established. Once connected, two threads are created: an inputThread(reads and sends user input) and an outputThread(reads and prints server output). The inputThread takes user input through "stdin". 
